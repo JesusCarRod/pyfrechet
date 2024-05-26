@@ -17,8 +17,8 @@ def w_3(t):
     else:
         return 0
     
-Sigma_1=np.array([[1, -0.7],
-                  [-0.7, 0.5]])
+Sigma_1=np.array([[1, -0.6],
+                  [-0.6, 0.5]])
 Sigma_2=np.array([[1, 0],
                   [0, 1]])
 Sigma_3=np.array([[0.5, 0.4],
