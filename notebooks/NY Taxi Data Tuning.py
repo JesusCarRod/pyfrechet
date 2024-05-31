@@ -68,14 +68,14 @@ scaler=MinMaxScaler(feature_range=(0,1))
 X_train=scaler.fit_transform(X_train)
 X_test=scaler.transform(X_test)
 
-# param_grid={
-#     'estimator__min_split_size': [1, 5, 10, 15, 20, 25, 30],
-#     'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12, 14]
-# }
 param_grid={
-    'estimator__min_split_size': [1, 5],
-    'estimator__mtry': [1, 4]
+    'estimator__min_split_size': [1, 5, 10, 15, 20, 25, 30, 35],
+    'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12, 14]
 }
+# param_grid={
+#     'estimator__min_split_size': [1, 5],
+#     'estimator__mtry': [1, 4]
+# }
 
 
 # In SearchGridCV we must use a score (greater the better) rather than a loss function (mse)
@@ -92,8 +92,8 @@ tuned_forest=GridSearchCV(
                             bootstrap_replace=True),
     param_grid=param_grid,
     scoring=neg_mse,
-    cv=3,
-    n_jobs=6,
+    cv=5,
+    n_jobs=-2,
     verbose=4
 )
 
