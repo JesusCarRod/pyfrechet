@@ -69,8 +69,8 @@ X_train=scaler.fit_transform(X_train)
 X_test=scaler.transform(X_test)
 
 param_grid={
-    'estimator__min_split_size': [1, 5, 10, 15, 20, 25, 30, 35],
-    'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12, 14]
+    'estimator__min_split_size': [1, 5, 10, 15, 20, 25, 30],
+    'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12]
 }
 # param_grid={
 #     'estimator__min_split_size': [1, 5],
@@ -93,7 +93,7 @@ tuned_forest=GridSearchCV(
     param_grid=param_grid,
     scoring=neg_mse,
     cv=5,
-    n_jobs=-2,
+    n_jobs=-1,
     verbose=4
 )
 
@@ -102,4 +102,4 @@ tuned_forest.fit(X_train, y_train)
 end_time=time.time()
 print(f'Tuning execution time: {end_time-start_time}')
 
-joblib.dump(tuned_forest, 'NY_tuned_forest.joblib')
+joblib.dump(tuned_forest, 'NY_tuned_forest_1.joblib')
