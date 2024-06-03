@@ -9,3 +9,4 @@ dist/
 .history/
 notebooks/yellow_tripdata_2019-01.csv
 notebooks/yellow_tripdata_2019-02.csv
+notebooks/NY_tuned_forest_1.joblib
