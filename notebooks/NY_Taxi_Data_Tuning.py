@@ -1,9 +1,5 @@
 import sys, os; sys.path.append(os.path.dirname(os.getcwd())) 
 
-import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse
-from matplotlib.cm import get_cmap
-
 # from ipywidgets import *
 
 from typing import Union
@@ -12,10 +8,8 @@ import numpy as np
 import pandas as pd
 import pickle
 import joblib
-import warnings
 import datetime as dt
 import time
-from datetime import datetime, timedelta
 from tqdm import tqdm
 from scipy.linalg import expm, logm
 from sklearn.model_selection import train_test_split
@@ -27,7 +21,7 @@ from scipy.stats import wishart
 # from sklearn import neighbors, clone
 
 
-from pyfrechet.metric_spaces import MetricData, Euclidean, LogCholesky, spd_to_log_chol, log_chol_to_spd
+from pyfrechet.metric_spaces import MetricData, LogCholesky, spd_to_log_chol, log_chol_to_spd
 # from pyfrechet.regression.frechet_regression import LocalFrechet, GlobalFrechet
 # from pyfrechet.regression.kernels import NadarayaWatson, gaussian, epanechnikov
 # from pyfrechet.regression.knn import KNearestNeighbours
@@ -61,6 +55,7 @@ X=df[['Temp.Avg', 'DewPoint.Avg', 'Humidity.Avg', 'WindSpeed.Avg',
 X=pd.get_dummies(data=X, columns=['Hour.Indicator', 'Weekday'])
 Y_stand=[A/A.max() for A in Y] # Standardize the weights
 Y_ExpLogChol=np.c_[[spd_to_log_chol(expm(A)) for A in Y_stand]]
+# Y_ExpLogChol=np.asarray(Y_ExpLogChol, dtype='object') # Some bugs with old versions of numpy
 y=MetricData(M, Y_ExpLogChol)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=283, random_state=100)
@@ -68,9 +63,15 @@ scaler=MinMaxScaler(feature_range=(0,1))
 X_train=scaler.fit_transform(X_train)
 X_test=scaler.transform(X_test)
 
+# First tried grid
+# param_grid={
+#     'estimator__min_split_size': [1, 5, 10, 15, 20, 25],
+#     'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12]
+# }
+# Second tried grid
 param_grid={
-    'estimator__min_split_size': [1, 5, 10, 15, 20, 25],
-    'estimator__mtry': [1, 2, 3, 4, 5, 6, 8, 10, 12]
+    'estimator__min_split_size': [1, 3, 5, 7, 10],
+    'estimator__mtry': [6, 8, 10, 12, 13, 14, 15, 16]
 }
 # param_grid={
 #     'estimator__min_split_size': [1, 5],
@@ -93,7 +94,7 @@ tuned_forest=GridSearchCV(
     param_grid=param_grid,
     scoring=neg_mse,
     cv=5,
-    n_jobs=-1,
+    n_jobs=5,
     verbose=4
 )
 
