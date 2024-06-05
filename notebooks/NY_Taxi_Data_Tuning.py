@@ -70,13 +70,9 @@ X_test=scaler.transform(X_test)
 # }
 # Second tried grid
 param_grid={
-    'estimator__min_split_size': [1, 3, 5, 7, 10],
-    'estimator__mtry': [6, 8, 10, 12, 13, 14, 15, 16]
+    'estimator__min_split_size': [1, 3, 5, 7, 10, 15],
+    'estimator__mtry': [6, 8, 10, 11, 12, 13, 14, 15, 16]
 }
-# param_grid={
-#     'estimator__min_split_size': [1, 5],
-#     'estimator__mtry': [1, 4]
-# }
 
 
 # In SearchGridCV we must use a score (greater the better) rather than a loss function (mse)
@@ -94,7 +90,7 @@ tuned_forest=GridSearchCV(
     param_grid=param_grid,
     scoring=neg_mse,
     cv=5,
-    n_jobs=5,
+    n_jobs=6,
     verbose=4
 )
 
@@ -103,4 +99,4 @@ tuned_forest.fit(X_train, y_train)
 end_time=time.time()
 print(f'Tuning execution time: {end_time-start_time}')
 
-joblib.dump(tuned_forest, 'NY_tuned_forest_1.joblib')
+joblib.dump(tuned_forest, 'NY_tuned_forest_2.joblib')
