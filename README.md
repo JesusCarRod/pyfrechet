@@ -7,9 +7,12 @@
 
 The package offers two essential building blocks for working with metric space-valued data: several implementations of metric spaces as subclasses of the `MetricSpace` class, and a dataframe-like class `MetricData` for holding a collection of metric space-valued data.
 
+> [!IMPORTANT]
+> Currently, the package only implements regression methods with Euclidean predictors.
+
 ## Example
 
-Currently, the package only implements regression methods with Euclidean predictors. Here's an example of how to use the package:
+Here's an example of how to use the package:
 
 ```python
 from sklearn.model_selection import train_test_split
