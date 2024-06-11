@@ -121,6 +121,7 @@ forest_predictions = forest.predict(X_test)
 oob_errors=forest.oob_errors()
 
 # Get the needed quantile to contruct the balls with (1-alpha) confidence level
+alpha=0.05
 Dalpha=np.percentile(oob_errors, (1-alpha)*100)
 
 # Compute the coverage ratio of the ball in the testing sample
