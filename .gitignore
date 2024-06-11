@@ -7,7 +7,7 @@ build/
 dist/
 *.egg-info/
 .history/
-notebooks/yellow_tripdata_2019-01.csv
-notebooks/yellow_tripdata_2019-02.csv
-notebooks/NY_tuned_forest_1.joblib
-notebooks/NY_tuned_forest_2.joblib
+NY_taxi_data/NY_tuned_forest_1.joblib
+NY_taxi_data/NY_tuned_forest_2.joblib
+NY_taxi_data/yellow_tripdata_2019-01.csv
+NY_taxi_data/yellow_tripdata_2019-02.csv
