@@ -84,6 +84,45 @@ The following regression methods are (partially) implemented:
 - K Nearest Neighbors
 - Random forest[^3] (with 4 different splitting schemes - 2x2)
 
+## Prediction balls
+
+An adaptation of the out-of-bag prediction intervals for Euclidean data[^6] to regression in metric spaces is also implemented:
+
+```python
+# ... Other standard imports
+from sklearn.model_selection import train_test_split
+from pyfrechet.regression.bagged_regressor import BaggedRegressor
+from pyfrechet.regression.trees import Tree
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=100)
+
+scaler=MinMaxScaler(feature_range=(0,1))
+X_train=scaler.fit_transform(X_train)
+X_test=scaler.transform(X_test)
+
+# Example of the use of random forest (Fréchet random forest)
+base = Tree(split_type='2means',
+            impurity_method='cart',
+            mtry=None,
+            min_split_size=5)
+forest = BaggedRegressor(estimator=base,
+                         n_estimators=100,
+                         bootstrap_fraction=1,
+                         bootstrap_replace=True,
+                         n_jobs=-2)
+forest.fit(X_train, y_train)
+forest_predictions = forest.predict(X_test)
+
+# Get the out-of-bag prediction errors
+oob_errors=forest.oob_errors()
+
+# Get the needed quantile to contruct the balls with (1-alpha) confidence level
+Dalpha=np.percentile(oob_errors, (1-alpha)*100)
+
+# Compute the coverage ratio of the ball in the testing sample
+np.mean(y_train.M.d(forest_predictions.data, y_test.data) <= Dalpha)
+```
+
 ## Testing
 
 After installing the dependencies, you can run the test suite from the root of the project with the `test` rule:
@@ -106,3 +145,5 @@ The package is licensed under the BSD 3-Clause License. A copy of the [license](
 [^4]: Panaretos, V. M., & Zemel, Y. (2020). An invitation to statistics in Wasserstein space (p. 147). Springer Nature.
 
 [^5]: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+
+[^6]: Zhang, H., Zimmerman, J., Nettleton, D., & Nordman, D. J. (2020). Random forest prediction intervals. Am. Stat.
