@@ -91,6 +91,7 @@ An adaptation of the out-of-bag prediction intervals for Euclidean data[^6] to r
 ```python
 # ... Other standard imports
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 from pyfrechet.regression.bagged_regressor import BaggedRegressor
 from pyfrechet.regression.trees import Tree
 
